@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Stock Resistance Calculator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .calculator {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      background: #0f172a;
+      color: white;
+      font-size: 18px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #22c55e;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #0f172a;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .percentage {
+      font-size: 36px;
+      font-weight: bold;
+      color: #22c55e;
+      margin-top: 10px;
+    }
+
+    .negative {
+      color: #ef4444;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="calculator">
+
+    <h1>Resistance Calculator</h1>
+
+    <p>Calculate potential stock price growth to resistance.</p>
+
+    <form id="calculatorForm">
+
+      <label for="currentPrice">Current Stock Price ($)</label>
+      <input
+        type="number"
+        id="currentPrice"
+        placeholder="Example: 100"
+        step="any"
+        min="0.000001"
+        required
+      >
+
+      <label for="resistance">Resistance Price ($)</label>
+      <input
+        type="number"
+        id="resistance"
+        placeholder="Example: 120"
+        step="any"
+        min="0.000001"
+        required
+      >
+
+      <button type="submit">Calculate</button>
+
+    </form>
+
+    <div class="result" id="resultBox">
+      <div id="resultLabel">Growth to Resistance</div>
+      <div class="percentage" id="percentageResult"></div>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById("calculatorForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const current = parseFloat(
+          document.getElementById("currentPrice").value
+        );
+
+        const resistance = parseFloat(
+          document.getElementById("resistance").value
+        );
+
+        if (
+          !Number.isFinite(current) ||
+          !Number.isFinite(resistance) ||
+          current <= 0 ||
+          resistance <= 0
+        ) {
+          alert("Please enter valid positive prices.");
+          return;
+        }
+
+        const percentage =
+          ((resistance - current) / current) * 100;
+
+        const resultBox =
+          document.getElementById("resultBox");
+
+        const percentageResult =
+          document.getElementById("percentageResult");
+
+        const resultLabel =
+          document.getElementById("resultLabel");
+
+        resultBox.style.display = "block";
+
+        if (percentage > 0) {
+          resultLabel.textContent = "Growth to Resistance";
+          percentageResult.textContent =
+            "+" + percentage.toFixed(2) + "%";
+
+          percentageResult.classList.remove("negative");
+
+        } else if (percentage < 0) {
+          resultLabel.textContent =
+            "Current Price Is Above This Level";
+
+          percentageResult.textContent =
+            percentage.toFixed(2) + "%";
+
+          percentageResult.classList.add("negative");
+
+        } else {
+          resultLabel.textContent =
+            "Price Is At Resistance";
+
+          percentageResult.textContent = "0.00%";
+          percentageResult.classList.remove("negative");
+        }
+
+      });
+  </script>
+
+</body>
+</html>
