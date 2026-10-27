@@ -1,2 +1,2 @@
 # Resistance Percentage Calculator by Deividas Strole
-Stock resistance percentage calculator by Deividas Strole.
+Stock resistance percentage calculator by Deividas Strole. 2026
